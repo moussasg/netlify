@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express(); // Add parentheses to call the express function
 const mongoose = require('mongoose');
+const router = express.Router()
+const severless = require('serverless-http')
 require('dotenv').config(); // Chargez les variables d'environnement du fichier .env
 const authController = require('./src/controllers/authController')
 const cors = require('cors');
@@ -14,6 +16,8 @@ app.post('/login', authController.login_post);
 app.post('/MesSmartphones/:id', authController.commands_post)
 app.get('/users', authController.users_get); // get all users
 app.get('/user', authController.user_get); // get spécifique user
+app.use('/.netlify/express',router)
+module.exports.handler = severless(app)
 /*
 app.get('/logout', authController.requireAuth, (req, res) => {
   res.render('logout');
